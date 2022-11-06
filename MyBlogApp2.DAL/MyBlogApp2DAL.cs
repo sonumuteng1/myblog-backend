@@ -1,9 +1,16 @@
-﻿//CommentModel kullanmadığımız için article adı yazar adı vs. kayıt yapılamıyor. Bunu nasıl aşacağız. Gerek var mı aşmaya. Böyle bir şey olsaydı ne yapmak gerekirdi. 
+﻿/* CommentModel kullanmadığımız için article adı yazar adı vs. kayıt yapılamıyor. Bunu nasıl aşacağız. Gerek var mı aşmaya. Böyle bir şey olsaydı ne yapmak gerekirdi. 
+ 
+Try catch best practice nasıl olmalı. İstediğim tipte dönüş yapamıyorum. Catch içerisine hiç bir şey yazamıyorum çünkü dönüş tipi model. 
+ If içerisinden result null ise dönüş null mü olmalı yoksa başka bir şey mi? 
+
+ */
+
 
 using MyBlogApp2.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,39 +21,65 @@ namespace MyBlogApp2.DAL
         MyBlogEntities db = new MyBlogEntities();
         public List<AuthorModel> GetAuthors()
         {
-            List<AuthorModel> result = (from a in db.Authors
-                                            //join b in db.AuthorsArticles on a.AuthorID equals b.AuthorID
-                                            //join c in db.Comments on b.ArticleID equals c.ArticleID
-                                            //join d in db.Articles on b.ArticleID equals d.ArticleID
-                                        select new AuthorModel
+            List<AuthorModel> result = (from a in db.Authors select new AuthorModel
                                         {
                                             AuthorSurname = a.AuthorSurname,
                                             AuthorName = a.AuthorName,
-                                            AuthorID = a.AuthorID
-                                            //ArticelTitel=d.Titel,   
-                                            //Content içeriği de açılırsa bu sefer content olanları getiriyor ve sayı az çıkıyor. Buradaki contenti açmak için modeldeki content propertysini de aktif hale getirmeliyiz.
-                                            //Content=c.Content                                         
+                                            AuthorID = a.AuthorID                                          
                                         }).ToList();
-            return result;
+            if (result == null)
+            {
+                return null;
+            }
+            else
+            {
+                return result;
+            }
+
+           
         }
         public AuthorModel GetAuthorById(int id)
         {
             var rest = new AuthorModel();
             var result = db.Authors.FirstOrDefault(x => x.AuthorID == id);
-            rest.AuthorName = result.AuthorName;
-            rest.AuthorSurname = result.AuthorSurname;
-            rest.AuthorID = result.AuthorID;
-
-            return rest;
+            if (result == null)
+            {
+                return null;
+            }
+            else
+            {
+                rest.AuthorName = result.AuthorName;
+                rest.AuthorSurname = result.AuthorSurname;
+                rest.AuthorID = result.AuthorID;
+                return rest;
+            }
         }
         public Author CreateAuthor(Author author)
         {
-            Author newAuthor = new Author();
-            newAuthor.AuthorName = author.AuthorName;
-            newAuthor.AuthorSurname = author.AuthorSurname;
-            db.Authors.Add(newAuthor);
-            db.SaveChanges();
-            return newAuthor;
+            
+            try
+            {
+                Author newAuthor = new Author();
+                newAuthor.AuthorName = author.AuthorName;
+                newAuthor.AuthorSurname = author.AuthorSurname;
+                db.Authors.Add(newAuthor);
+                //db.savechanges returns int. If it saves 3 data, it returns 3 as int.  
+                if (db.SaveChanges()>0)
+                {
+                    return newAuthor;
+                }
+                else
+                {
+                    return null;
+                }
+                
+                
+            }
+            catch (Exception ex)
+            {
+                throw (ex);              
+            }
+            
 
         }
         public Author UpdateAuthor(Author author, int id)
@@ -226,7 +259,6 @@ namespace MyBlogApp2.DAL
             return article;
 
         }
-
         public List<CommentModel> GetComments()
         {
             List<CommentModel> result = (from a in db.Comments
@@ -264,7 +296,7 @@ namespace MyBlogApp2.DAL
                           where (a.ArticleID == id)
                           select new CommentModel
                           {
-                              ArticleID = a.ArticleID,                              
+                              ArticleID = a.ArticleID,
                               AuthorID = b.AuthorID,
                               CommenterName = b.CommenterName,
                               CommentID = b.CommentID,
@@ -286,7 +318,7 @@ namespace MyBlogApp2.DAL
             db.SaveChanges();
             return comment;
         }
-        public Comment UpdateComment(Comment comment,int id)
+        public Comment UpdateComment(Comment comment, int id)
         {
             Comment exist = db.Comments.FirstOrDefault(x => x.CommentID == id);
             exist.CommenterName = comment.CommenterName;

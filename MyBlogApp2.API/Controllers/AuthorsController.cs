@@ -6,6 +6,15 @@ using System.Net.Http;
 using System.Web.Http;
 using MyBlogApp2.DAL;
 
+/*
+ byid de sonuç yoksa badrequest mi yoksa notfound mu olmalı
+Controllerda ihttpactionresult kullanıyorum ama dal kısmında ne kullanmalıyım. 
+ihttpactionresult ile kendi yazdığım message döndürebiliyor muyum?
+dal kısmında post için id ayrı mı gönderilmeli yoksa nesneden mi alınmalı
+Create Author kısmındaki dönüş tipi nasıl? Başka türlü created dönemiyorum. 
+
+ */
+
 namespace MyBlogApp2.API.Controllers
 {
     public class AuthorsController : ApiController
@@ -15,25 +24,40 @@ namespace MyBlogApp2.API.Controllers
         [HttpGet]
         public IHttpActionResult GetAuthors()
         {
-            var result= myBlogApp2DAL.GetAuthors();
+            var result = myBlogApp2DAL.GetAuthors();
+            if (result==null)
+            {
+                return NotFound();
+            }
+            
             return Ok(result);
+           
         }
         [HttpGet]
         public IHttpActionResult GetAuthor(int id)
         {
+
             var result = myBlogApp2DAL.GetAuthorById(id);
+            if (result==null)
+            {
+                return BadRequest();
+               // return NotFound();
+            }
             return Ok(result);
         }
         [HttpPost]
         public IHttpActionResult CreateAuthor(Author newAuthor)
         {
-            return Ok(myBlogApp2DAL.CreateAuthor(newAuthor));
+            var result = myBlogApp2DAL.CreateAuthor(newAuthor);
+            return Content(HttpStatusCode.Created, result);
+            
         }
         [HttpPut]
         public IHttpActionResult UpdateAutor(Author author,int id)
         {
             var result = myBlogApp2DAL.UpdateAuthor(author, id);
             return Ok(result);
+            
 
         }
         [HttpDelete]
