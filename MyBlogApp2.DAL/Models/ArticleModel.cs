@@ -13,10 +13,12 @@ namespace MyBlogApp2.DAL.Models
         public string articleContent { get; set; }
         public List<int> authorId { get; set; }
         
+
         public int ArticleID { get; set; }
         public string Titel { get; set; }
         public string Content { get; set; }
         public bool Status { get; set; }
+        public bool IsDeleted { get; set; }
         public Nullable<System.DateTime> PublishDate { get; set; }
         public int CategoryID { get; set; }
     }
@@ -29,6 +31,7 @@ namespace MyBlogApp2.DAL.Models
         public string articleContent { get; set; }
         public string authorName  { get; set; }
         public string  authorSurname { get; set; }
+        public bool? IsDeleted { get; set; }
     }
     
     public class ArticlesToCategoriesModel
@@ -41,6 +44,7 @@ namespace MyBlogApp2.DAL.Models
         public string articleContent { get; set; }
         public string authorName { get; set; }
         public string authorSurname { get; set; }
+        public bool? IsDeleted { get; set; }
 
     }
 }

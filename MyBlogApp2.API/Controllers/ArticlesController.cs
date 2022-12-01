@@ -13,7 +13,7 @@ namespace MyBlogApp2.API.Controllers
     {
         MyBlogApp2DAL myBlogApp2DAL = new MyBlogApp2DAL();
         [HttpGet]
-        public IHttpActionResult GetArticles()
+        public IHttpActionResult GetArticles() //
         {
             var result = myBlogApp2DAL.GetArticles();
             return Ok(result);

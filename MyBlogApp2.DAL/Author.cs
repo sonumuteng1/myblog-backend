@@ -11,8 +11,7 @@ namespace MyBlogApp2.DAL
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-
+    
     public partial class Author
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -23,9 +22,9 @@ namespace MyBlogApp2.DAL
         }
     
         public int AuthorID { get; set; }
-       [Required(ErrorMessage ="Name can not be null")]
         public string AuthorName { get; set; }
         public string AuthorSurname { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AuthorsArticle> AuthorsArticles { get; set; }

@@ -23,10 +23,12 @@ namespace MyBlogApp2.DAL
         {
             List<AuthorModel> result = (from a in db.Authors select new AuthorModel
                                         {
-                                            AuthorSurname = a.AuthorSurname,
+                                            AuthorSurname=a.AuthorName,
+
                                             AuthorName = a.AuthorName,
-                                            AuthorID = a.AuthorID                                          
-                                        }).ToList();
+                                            AuthorID = a.AuthorID,  
+                                            IsDeleted=a.IsDeleted
+                                        }).Where(x=>x.IsDeleted== false).ToList();
             if (result == null)
             {
                 return null;
@@ -41,7 +43,7 @@ namespace MyBlogApp2.DAL
         public AuthorModel GetAuthorById(int id)
         {
             var rest = new AuthorModel();
-            var result = db.Authors.FirstOrDefault(x => x.AuthorID == id);
+            var result = db.Authors.Where(x => x.IsDeleted == false).FirstOrDefault(x => x.AuthorID == id);
             if (result == null)
             {
                 return null;
@@ -94,7 +96,7 @@ namespace MyBlogApp2.DAL
         {
             var exist = db.Authors.FirstOrDefault(x => x.AuthorID == id);
             //var exist2=db.Authors.Find(id) alternatif olarak yazılıyor. 
-            db.Authors.Remove(exist);
+            exist.IsDeleted = true;
             db.SaveChanges();
 
         }
@@ -105,12 +107,12 @@ namespace MyBlogApp2.DAL
                                           {
                                               CategoryId = c.CategoryID,
                                               CategoryName = c.Name
-                                          }).OrderBy(c => c.CategoryName).ToList();
+                                          }).Where(x => x.IsDeleted == false).OrderBy(c => c.CategoryName).ToList();
             return result;
         }
         public Category GetCategoryById(int id)
         {
-            var result = db.Categories.FirstOrDefault(x => x.CategoryID == id);
+            var result = db.Categories.Where(x => x.IsDeleted == false).FirstOrDefault(x => x.CategoryID == id);
             return result;
         }
         public Category CreateCategory(Category category)
@@ -137,13 +139,13 @@ namespace MyBlogApp2.DAL
                                              articleContent = a.Content,
                                              articleTitel = a.Titel,
                                              articleId = a.ArticleID
-                                         }).OrderBy(c => c.articleTitel).ToList();
+                                         }).Where(x => x.IsDeleted == false).OrderBy(c => c.articleTitel).ToList();
             return result;
         }
         public ArticleModel GetArticleById(int id)
         {
             var rest = new ArticleModel();
-            var result = db.Articles.FirstOrDefault(x => x.ArticleID == id);
+            var result = db.Articles.Where(x => x.IsDeleted == false).FirstOrDefault(x => x.ArticleID == id);
             rest.articleId = result.ArticleID;
             rest.articleTitel = result.Titel;
             rest.articleContent = result.Content;
@@ -167,7 +169,7 @@ namespace MyBlogApp2.DAL
                                                        authorName = c.AuthorName,
                                                        authorSurname = c.AuthorSurname
 
-                                                   }).ToList();
+                                                   }).Where(x => x.IsDeleted == false).ToList();
             return result;
         }
         public List<ArticlesToAuthorsModel> GetArticlesByAuthorId(int id)
@@ -190,9 +192,11 @@ namespace MyBlogApp2.DAL
                                                        authorSurname = a.AuthorSurname,
 
 
-                                                   }).OrderBy(x => x.articleTitel).ToList();
+                                                   }).Where(x => x.IsDeleted == false).OrderBy(x => x.articleTitel).ToList();
             return result;
         }
+
+        //bunların modellerine IsDeleted eklememi istedi neden?
         public List<ArticlesToCategoriesModel> GetArticlesByCategoryId(int id)
         {
             List<ArticlesToCategoriesModel> result = (from a in db.Articles
@@ -214,7 +218,7 @@ namespace MyBlogApp2.DAL
                                                           authorSurname = d.AuthorSurname
 
 
-                                                      }).OrderBy(x => x.articleTitel).ToList();
+                                                      }).Where(x => x.IsDeleted == false).OrderBy(x => x.articleTitel).ToList();
             return result;
 
         }
@@ -269,7 +273,7 @@ namespace MyBlogApp2.DAL
                                              CommenterName = a.CommenterName,
                                              ArticleID = a.ArticleID,
                                              AuthorID = a.AuthorID
-                                         }).OrderBy(c => c.CommentID).ToList();
+                                         }).Where(x => x.IsDeleted == false).OrderBy(c => c.CommentID).ToList();
             return result;
         }
         public List<CommentModel> GetCommentsByAuthorId(int id)
@@ -285,7 +289,7 @@ namespace MyBlogApp2.DAL
                                              CommenterName = b.CommenterName,
                                              ArticleID = b.ArticleID,
                                              AuthorID = a.AuthorID
-                                         }).OrderBy(x => x.CommentID).ToList();
+                                         }).Where(x => x.IsDeleted == false).OrderBy(x => x.CommentID).ToList();
             return result;
         }
         public List<CommentModel> GetCommentsByArticleId(int id)
@@ -301,7 +305,7 @@ namespace MyBlogApp2.DAL
                               CommenterName = b.CommenterName,
                               CommentID = b.CommentID,
                               Content = b.Content
-                          }).OrderBy(x => x.ArticleID).ToList();
+                          }).Where(x => x.IsDeleted == false).OrderBy(x => x.ArticleID).ToList();
             return result;
         }
 
@@ -333,7 +337,4 @@ namespace MyBlogApp2.DAL
 }
 
 
-//Authors Get,Post,Put,Delete
-//Articles Get,Post,Put,Delete
-//Categories Get,Post,Put,Delete
-//Comments Get,Post,Put,Delete
+

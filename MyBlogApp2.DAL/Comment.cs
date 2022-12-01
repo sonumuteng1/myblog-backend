@@ -19,6 +19,7 @@ namespace MyBlogApp2.DAL
         public string CommenterName { get; set; }
         public int ArticleID { get; set; }
         public int AuthorID { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual Article Article { get; set; }
         public virtual Author Author { get; set; }

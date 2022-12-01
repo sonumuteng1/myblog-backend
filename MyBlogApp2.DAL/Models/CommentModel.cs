@@ -13,6 +13,7 @@ namespace MyBlogApp2.DAL.Models
         public string CommenterName { get; set; }
         public int ArticleID { get; set; }
         public int AuthorID { get; set; }
+        public bool? IsDeleted { get; set; }
 
     }
 }

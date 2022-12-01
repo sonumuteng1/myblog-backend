@@ -14,10 +14,11 @@ namespace MyBlogApp2.DAL
         [Required]
         public string AuthorName { get; set; }
         public string AuthorSurname { get; set; }
+        public bool? IsDeleted { get; set; }
 
 
-            //public string ArticelTitel { get; set; }
-            //public string Content { get; set; }
+        //public string ArticelTitel { get; set; }
+        //public string Content { get; set; }
 
 
     }

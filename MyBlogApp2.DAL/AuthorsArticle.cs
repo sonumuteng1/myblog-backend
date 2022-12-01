@@ -14,9 +14,10 @@ namespace MyBlogApp2.DAL
     
     public partial class AuthorsArticle
     {
+        public int AuthorsArticlesID { get; set; }
         public int AuthorID { get; set; }
         public int ArticleID { get; set; }
-        public int AuthorsArticlesID { get; set; }
+        public Nullable<bool> IsDeleted { get; set; }
     
         public virtual Article Article { get; set; }
         public virtual Author Author { get; set; }

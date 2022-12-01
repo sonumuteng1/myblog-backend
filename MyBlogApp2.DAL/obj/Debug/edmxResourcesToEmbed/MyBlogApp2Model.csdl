@@ -4,7 +4,12 @@
     <EntitySet Name="Articles" EntityType="MyBlogModel.Article" />
     <EntitySet Name="Authors" EntityType="MyBlogModel.Author" />
     <EntitySet Name="AuthorsArticles" EntityType="MyBlogModel.AuthorsArticle" />
+    <EntitySet Name="Categories" EntityType="MyBlogModel.Category" />
     <EntitySet Name="Comments" EntityType="MyBlogModel.Comment" />
+    <AssociationSet Name="FK_Articles_Categories" Association="MyBlogModel.FK_Articles_Categories">
+      <End Role="Category" EntitySet="Categories" />
+      <End Role="Article" EntitySet="Articles" />
+    </AssociationSet>
     <AssociationSet Name="FK_AuthorsArticles_Articles" Association="MyBlogModel.FK_AuthorsArticles_Articles">
       <End Role="Article" EntitySet="Articles" />
       <End Role="AuthorsArticle" EntitySet="AuthorsArticles" />
@@ -21,12 +26,6 @@
       <End Role="Author" EntitySet="Authors" />
       <End Role="Comment" EntitySet="Comments" />
     </AssociationSet>
-    <EntitySet Name="sysdiagrams" EntityType="MyBlogModel.sysdiagram" />
-    <EntitySet Name="Categories" EntityType="MyBlogModel.Category" />
-    <AssociationSet Name="FK_Articles_Categories" Association="MyBlogModel.FK_Articles_Categories">
-      <End Role="Category" EntitySet="Categories" />
-      <End Role="Article" EntitySet="Articles" />
-    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Article">
     <Key>
@@ -38,9 +37,10 @@
     <Property Name="Status" Type="Boolean" Nullable="false" />
     <Property Name="PublishDate" Type="DateTime" Precision="3" />
     <Property Name="CategoryID" Type="Int32" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="Category" Relationship="MyBlogModel.FK_Articles_Categories" FromRole="Article" ToRole="Category" />
     <NavigationProperty Name="AuthorsArticles" Relationship="MyBlogModel.FK_AuthorsArticles_Articles" FromRole="Article" ToRole="AuthorsArticle" />
     <NavigationProperty Name="Comments" Relationship="MyBlogModel.FK_Comments_Articles" FromRole="Article" ToRole="Comment" />
-    <NavigationProperty Name="Category" Relationship="MyBlogModel.FK_Articles_Categories" FromRole="Article" ToRole="Category" />
   </EntityType>
   <EntityType Name="Author">
     <Key>
@@ -49,6 +49,7 @@
     <Property Name="AuthorID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="AuthorName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="AuthorSurname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" />
     <NavigationProperty Name="AuthorsArticles" Relationship="MyBlogModel.FK_AuthorsArticles_Authors" FromRole="Author" ToRole="AuthorsArticle" />
     <NavigationProperty Name="Comments" Relationship="MyBlogModel.FK_Comments_Authors" FromRole="Author" ToRole="Comment" />
   </EntityType>
@@ -56,11 +57,21 @@
     <Key>
       <PropertyRef Name="AuthorsArticlesID" />
     </Key>
+    <Property Name="AuthorsArticlesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="AuthorID" Type="Int32" Nullable="false" />
     <Property Name="ArticleID" Type="Int32" Nullable="false" />
-    <Property Name="AuthorsArticlesID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="IsDeleted" Type="Boolean" />
     <NavigationProperty Name="Article" Relationship="MyBlogModel.FK_AuthorsArticles_Articles" FromRole="AuthorsArticle" ToRole="Article" />
     <NavigationProperty Name="Author" Relationship="MyBlogModel.FK_AuthorsArticles_Authors" FromRole="AuthorsArticle" ToRole="Author" />
+  </EntityType>
+  <EntityType Name="Category">
+    <Key>
+      <PropertyRef Name="CategoryID" />
+    </Key>
+    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsDeleted" Type="Boolean" />
+    <NavigationProperty Name="Articles" Relationship="MyBlogModel.FK_Articles_Categories" FromRole="Category" ToRole="Article" />
   </EntityType>
   <EntityType Name="Comment">
     <Key>
@@ -71,9 +82,22 @@
     <Property Name="CommenterName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
     <Property Name="ArticleID" Type="Int32" Nullable="false" />
     <Property Name="AuthorID" Type="Int32" Nullable="false" />
+    <Property Name="IsDeleted" Type="Boolean" />
     <NavigationProperty Name="Article" Relationship="MyBlogModel.FK_Comments_Articles" FromRole="Comment" ToRole="Article" />
     <NavigationProperty Name="Author" Relationship="MyBlogModel.FK_Comments_Authors" FromRole="Comment" ToRole="Author" />
   </EntityType>
+  <Association Name="FK_Articles_Categories">
+    <End Type="MyBlogModel.Category" Role="Category" Multiplicity="1" />
+    <End Type="MyBlogModel.Article" Role="Article" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Category">
+        <PropertyRef Name="CategoryID" />
+      </Principal>
+      <Dependent Role="Article">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_AuthorsArticles_Articles">
     <End Type="MyBlogModel.Article" Role="Article" Multiplicity="1" />
     <End Type="MyBlogModel.AuthorsArticle" Role="AuthorsArticle" Multiplicity="*" />
@@ -119,36 +143,6 @@
       </Principal>
       <Dependent Role="Comment">
         <PropertyRef Name="AuthorID" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <EntityType Name="sysdiagram">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
-    <Property Name="principal_id" Type="Int32" Nullable="false" />
-    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="version" Type="Int32" />
-    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-  </EntityType>
-  <EntityType Name="Category">
-    <Key>
-      <PropertyRef Name="CategoryID" />
-    </Key>
-    <Property Name="CategoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
-    <NavigationProperty Name="Articles" Relationship="MyBlogModel.FK_Articles_Categories" FromRole="Category" ToRole="Article" />
-  </EntityType>
-  <Association Name="FK_Articles_Categories">
-    <End Type="MyBlogModel.Category" Role="Category" Multiplicity="1" />
-    <End Type="MyBlogModel.Article" Role="Article" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Category">
-        <PropertyRef Name="CategoryID" />
-      </Principal>
-      <Dependent Role="Article">
-        <PropertyRef Name="CategoryID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

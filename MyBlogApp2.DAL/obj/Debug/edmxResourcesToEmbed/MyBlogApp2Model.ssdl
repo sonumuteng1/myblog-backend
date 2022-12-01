@@ -10,6 +10,7 @@
     <Property Name="Status" Type="bit" Nullable="false" />
     <Property Name="PublishDate" Type="datetime" />
     <Property Name="CategoryID" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <EntityType Name="Authors">
     <Key>
@@ -18,6 +19,7 @@
     <Property Name="AuthorID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AuthorName" Type="nvarchar" MaxLength="50" />
     <Property Name="AuthorSurname" Type="nvarchar" MaxLength="50" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <EntityType Name="AuthorsArticles">
     <Key>
@@ -26,6 +28,7 @@
     <Property Name="AuthorsArticlesID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="AuthorID" Type="int" Nullable="false" />
     <Property Name="ArticleID" Type="int" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <EntityType Name="Categories">
     <Key>
@@ -33,6 +36,7 @@
     </Key>
     <Property Name="CategoryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <EntityType Name="Comments">
     <Key>
@@ -43,16 +47,7 @@
     <Property Name="CommenterName" Type="nvarchar" MaxLength="50" />
     <Property Name="ArticleID" Type="int" Nullable="false" />
     <Property Name="AuthorID" Type="int" Nullable="false" />
-  </EntityType>
-  <EntityType Name="sysdiagrams">
-    <Key>
-      <PropertyRef Name="diagram_id" />
-    </Key>
-    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-    <Property Name="principal_id" Type="int" Nullable="false" />
-    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="version" Type="int" />
-    <Property Name="definition" Type="varbinary(max)" />
+    <Property Name="IsDeleted" Type="bit" />
   </EntityType>
   <Association Name="FK_Articles_Categories">
     <End Role="Categories" Type="Self.Categories" Multiplicity="1" />
@@ -120,7 +115,6 @@
     <EntitySet Name="AuthorsArticles" EntityType="Self.AuthorsArticles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Categories" EntityType="Self.Categories" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Comments" EntityType="Self.Comments" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <AssociationSet Name="FK_Articles_Categories" Association="Self.FK_Articles_Categories">
       <End Role="Categories" EntitySet="Categories" />
       <End Role="Articles" EntitySet="Articles" />

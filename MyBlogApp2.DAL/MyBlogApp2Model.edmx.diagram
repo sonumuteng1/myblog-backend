@@ -5,17 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="11417392879044889904a747b2394541" Name="Diagram1" ZoomLevel="74">
-        <EntityTypeShape EntityType="MyBlogModel.Article" Width="1.5" PointX="3" PointY="3.375" />
-        <EntityTypeShape EntityType="MyBlogModel.Author" Width="1.5" PointX="3" PointY="7.5" />
-        <EntityTypeShape EntityType="MyBlogModel.AuthorsArticle" Width="1.5" PointX="5.25" PointY="0.75" />
-        <EntityTypeShape EntityType="MyBlogModel.Comment" Width="1.5" PointX="5.25" PointY="3.5" />
+        <EntityTypeShape EntityType="MyBlogModel.Article" Width="1.5" PointX="3" PointY="2.375" />
+        <EntityTypeShape EntityType="MyBlogModel.Author" Width="1.5" PointX="5.75" PointY="6.125" />
+        <EntityTypeShape EntityType="MyBlogModel.AuthorsArticle" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="MyBlogModel.Category" Width="1.5" PointX="0.75" PointY="3" />
+        <EntityTypeShape EntityType="MyBlogModel.Comment" Width="1.5" PointX="5.75" PointY="2.375" />
+        <AssociationConnector Association="MyBlogModel.FK_Articles_Categories" />
         <AssociationConnector Association="MyBlogModel.FK_AuthorsArticles_Articles" />
         <AssociationConnector Association="MyBlogModel.FK_Comments_Articles" />
         <AssociationConnector Association="MyBlogModel.FK_AuthorsArticles_Authors" />
         <AssociationConnector Association="MyBlogModel.FK_Comments_Authors" />
-        <EntityTypeShape EntityType="MyBlogModel.sysdiagram" Width="1.5" PointX="5.375" PointY="6.75" />
-        <EntityTypeShape EntityType="MyBlogModel.Category" Width="1.5" PointX="0.75" PointY="4" />
-        <AssociationConnector Association="MyBlogModel.FK_Articles_Categories" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

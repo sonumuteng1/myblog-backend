@@ -10,6 +10,7 @@ namespace MyBlogApp2.DAL
     {
         public int CategoryId { get; set; }
         public string CategoryName { get; set; }
+        public bool? IsDeleted { get; set; }
     }
 
     public class ArticleCountModel{

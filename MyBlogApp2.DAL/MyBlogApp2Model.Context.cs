@@ -28,8 +28,7 @@ namespace MyBlogApp2.DAL
         public virtual DbSet<Article> Articles { get; set; }
         public virtual DbSet<Author> Authors { get; set; }
         public virtual DbSet<AuthorsArticle> AuthorsArticles { get; set; }
-        public virtual DbSet<Comment> Comments { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
     }
 }
