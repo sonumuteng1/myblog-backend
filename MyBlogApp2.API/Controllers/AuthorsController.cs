@@ -6,14 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using MyBlogApp2.DAL;
 
-/*
- byid de sonuç yoksa badrequest mi yoksa notfound mu olmalı
-Controllerda ihttpactionresult kullanıyorum ama dal kısmında ne kullanmalıyım. 
-ihttpactionresult ile kendi yazdığım message döndürebiliyor muyum?
-dal kısmında post için id ayrı mı gönderilmeli yoksa nesneden mi alınmalı
-Create Author kısmındaki dönüş tipi nasıl? Başka türlü created dönemiyorum. 
 
- */
 
 namespace MyBlogApp2.API.Controllers
 {
