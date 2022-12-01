@@ -1,12 +1,4 @@
-﻿/* CommentModel kullanmadığımız için article adı yazar adı vs. kayıt yapılamıyor. Bunu nasıl aşacağız. Gerek var mı aşmaya. Böyle bir şey olsaydı ne yapmak gerekirdi. 
- 
-Try catch best practice nasıl olmalı. İstediğim tipte dönüş yapamıyorum. Catch içerisine hiç bir şey yazamıyorum çünkü dönüş tipi model. 
- If içerisinden result null ise dönüş null mü olmalı yoksa başka bir şey mi? 
-
- */
-
-
-using MyBlogApp2.DAL.Models;
+﻿using MyBlogApp2.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
