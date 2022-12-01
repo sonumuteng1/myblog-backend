@@ -17,10 +17,6 @@ namespace MyBlogApp2.DAL
         public bool? IsDeleted { get; set; }
 
 
-        //public string ArticelTitel { get; set; }
-        //public string Content { get; set; }
-
-
     }
     public class AuthorModel2
     {
